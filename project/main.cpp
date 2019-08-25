@@ -7,7 +7,6 @@
 
 #include <iostream>
 #include "baseClass.hpp"
-#include "test.h"
 #include <dlfcn.h>
 
 #include <list>
@@ -29,7 +28,7 @@ void findAllPlugins(const std::string& path, std::list<std::string>& pluginNames
 		}
 		closedir(pDIR);
 	} else {
-		std::cout<< "Can not open dir"<<std::endl;
+		std::cout<< "Can not open dir: "<<path<<std::endl;
 	}
 }
 typedef struct {
@@ -39,13 +38,13 @@ typedef struct {
 } task;
 
 int main() {
-	const std::string pluginsPath("path/to/plugin/folder");
+	const std::string pluginsPath("/path/to/plugin/folder");
 	std::list<std::string> pluginNames;
 	std::list<task> handlers;
 	findAllPlugins(pluginsPath,pluginNames);
 
 	for(auto name : pluginNames) {
-		std::cout<<"Finded plugin "<<name<<std::endl;
+		std::cout<<"Find plugin "<<name<<std::endl;
 		void* plugin = dlopen((pluginsPath + "/" +  name).c_str(), RTLD_NOW);
 	    if(!plugin) {
 	        std::cout<<"Can not load library"<<dlerror()<<std::endl;
@@ -74,7 +73,10 @@ int main() {
 	int i = 0;
 	for(auto h : handlers) {
 		h.test->PrintThis("Hello ");
-		std::cout<<h.test->sum(i,++i);
+		++i;
+		std::cout<<h.test->sum(i,i+1)<<std::endl;
+		h.del(h.test);
+		dlclose(h.plugin);
 	}
     return 0;
 }

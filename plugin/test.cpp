@@ -16,7 +16,7 @@ int Test::PrintThis(const std::string &message) {
 
 
 int Test::sum(int a, int b) {
-	return a*b;
+	return a+b;
 }
 
 extern "C" baseTest* createTest() {

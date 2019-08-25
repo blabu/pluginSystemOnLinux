@@ -19,4 +19,7 @@ public:
 };
 
 
+typedef baseTest* createTest_t();
+typedef void deleteTest_T(baseTest *ptr);
+
 #endif /* BASECLASS_HPP_ */
